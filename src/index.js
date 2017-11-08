@@ -69,7 +69,7 @@ const parseXML = (xml) => {
 /*
 * Make an async request using https
 */
-const httpGetAsync = async (query, callback) => {
+const httpGetAsync = async (query) => {
     return new Promise((resolve, reject) => {
         const request = https.get(query, response => {
             if (response.statusCode < 200 || response.statusCode > 299) {
