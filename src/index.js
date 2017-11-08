@@ -1,4 +1,4 @@
-const fetch = require('node-fetch');
+const https = require('https');
 const parseString = require('xml2js').parseString;
 
 const URL = "https://clinicaltrials.gov/ct2";
@@ -7,26 +7,6 @@ const URL = "https://clinicaltrials.gov/ct2";
  * Clinical trials
  */
 class ClinicalTrial {
-
-    /*
-    * Internal request function that parses xml response and returns a JSON result
-    */
-    static async request(query) {
-        return new Promise(resolve => {
-            fetch(query)
-            .then(response => response.text())
-            .then(xml => {
-                parseString(xml, {explicitArray: false}, function (err, result) {
-                    if (err) {
-                        throw err;
-                    } else {
-                        resolve(result);
-                    }
-                }); 
-            });
-        });
-    }
-
     /**
      * @typedef {object} SearchProps
      * @param {string} status - Specify whether you want to search for studies that are recruiting participants or in other stages.
@@ -53,7 +33,7 @@ class ClinicalTrial {
         query += `&gndr=${props.gender || ''}`;
         query += `&hlth=${props.healthy ? 'Y' : 'N'}`;
 
-        return await this.request(query).then(result => result.search_results.clinical_study);
+        return await httpGetAsync(query).then(result => result.search_results.clinical_study);
     }
 
     /**
@@ -65,8 +45,40 @@ class ClinicalTrial {
         let query = `${URL}/show/${id}`;
         query += '?displayxml=true';
 
-        return await this.request(query).then(result => result.clinical_study);
+        return await httpGetAsync(query).then(result => result.clinical_study);
     }
+}
+
+/*
+* Parse response XML and return formatted JSON
+*/
+const parseXML = (xml) => {
+    let response;
+    parseString(xml, {explicitArray: false}, (err, result) => {
+        if (!err) { 
+            response = result;
+        } else { throw err };
+    });
+    return response;
+}
+
+/*
+* Make an async request using https
+*/
+const httpGetAsync = async (query, callback) => {
+    return new Promise((resolve, reject) => {
+        const request = https.get(query, response => {
+            if (response.statusCode < 200 || response.statusCode > 299) {
+                reject(new Error('Failed to load page, status code: ' + response.statusCode));
+            };
+            let data = '';
+            response.on('data', chunk => {data += chunk});
+            response.on('end', () => {
+                resolve(parseXML(data));
+            });
+        });
+        request.on('error', (error) => reject(error));
+    });
 }
 
 module.exports = ClinicalTrial;
