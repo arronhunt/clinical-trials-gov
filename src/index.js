@@ -54,7 +54,11 @@ class ClinicalTrial {
 */
 const parseXML = (xml) => {
     let response;
-    parseString(xml, {explicitArray: false}, (err, result) => {
+    parseString(xml, {
+        explicitArray: false,
+        mergeAttrs: true,
+        normalize: true,
+    }, (err, result) => {
         if (!err) { 
             response = result;
         } else { throw err };
