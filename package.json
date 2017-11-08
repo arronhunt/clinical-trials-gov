@@ -1,0 +1,23 @@
+{
+  "name": "clinical-trials-gov",
+  "version": "1.0.0",
+  "description": "A way to interface with the clinicaltrials.gov api",
+  "main": "src/index.js",
+  "scripts": {
+    "docs": "jsdoc2md src/*.js > docs.md"
+  },
+  "keywords": [
+    "clinical",
+    "trial",
+    "gov"
+  ],
+  "author": "Arron Hunt",
+  "license": "MIT",
+  "dependencies": {
+    "node-fetch": "^1.7.3",
+    "xml2js": "^0.4.19"
+  },
+  "devDependencies": {
+    "jsdoc-to-markdown": "^3.1.0-0"
+  }
+}
