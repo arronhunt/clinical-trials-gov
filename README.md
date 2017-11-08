@@ -12,7 +12,7 @@ npm install --save clinical-trials-gov
 
 ### Usage
 
-Read the full docs in `docs.md`
+Read the full docs in [docs.md](https://github.com/arronhunt/clinical-trials-gov/blob/master/docs.md)
 
 ```js
 const ClinicalTrials = require('clinical-trials-gov');
