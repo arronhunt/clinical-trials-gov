@@ -42,7 +42,7 @@ class ClinicalTrial {
      * @param {SearchProps} props
      * @returns {object}
      */
-    static async search(props) {
+    static search(props) {
         let query = `${URL}/results`;
         query += '?displayxml=true';
         query += `&recr=${props.status || 'open'}`;
@@ -53,7 +53,7 @@ class ClinicalTrial {
         query += `&gndr=${props.gender || ''}`;
         query += `&hlth=${props.healthy ? 'Y' : 'N'}`;
 
-        return await this.request(query).then(result => result.search_results.clinical_study);
+        return this.request(query).then(result => result.search_results.clinical_study);
     }
 
     /**
@@ -61,11 +61,11 @@ class ClinicalTrial {
      * @param {string} id - ClinicalTrials.gov Identifier
      * @returns {object}
      */
-    static async getDetails(id) {
+    static getDetails(id) {
         let query = `${URL}/show/${id}`;
         query += '?displayxml=true';
 
-        return await this.request(query).then(result => result.clinical_study);
+        return this.request(query).then(result => result.clinical_study);
     }
 }
 
