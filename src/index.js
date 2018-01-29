@@ -57,6 +57,18 @@ class ClinicalTrial {
     }
 
     /**
+     * Search the conditions and diseases list
+     * @param {string} search_query - Search query. E.g. "Cancer"
+     * @returns {array}
+     */
+    static searchConditions(search_query) {
+        let query = `${URL}/rpc/extend/cond`;
+        query += `?cond=${search_query}`;
+
+        return fetch(query).then(resp => resp.text()).then(JSON.parse);
+    }
+
+    /**
      * Get details for a specific trial from a ClinicalTrials.gov Identifier
      * @param {string} id - ClinicalTrials.gov Identifier
      * @returns {object}

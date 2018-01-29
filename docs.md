@@ -22,6 +22,7 @@ Clinical trials
 
 * [ClinicalTrial](#ClinicalTrial)
     * [.search(props)](#ClinicalTrial.search) ⇒ <code>object</code>
+    * [.searchConditions(search_query)](#ClinicalTrial.searchConditions) ⇒ <code>array</code>
     * [.getDetails(id)](#ClinicalTrial.getDetails) ⇒ <code>object</code>
 
 <a name="ClinicalTrial.search"></a>
@@ -34,6 +35,17 @@ Search for clinical trials using search criteria
 | Param | Type |
 | --- | --- |
 | props | [<code>SearchProps</code>](#SearchProps) | 
+
+<a name="ClinicalTrial.searchConditions"></a>
+
+### ClinicalTrial.searchConditions(search_query) ⇒ <code>array</code>
+Search the conditions and diseases list
+
+**Kind**: static method of [<code>ClinicalTrial</code>](#ClinicalTrial)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| search_query | <code>string</code> | Search query. E.g. "Cancer" |
 
 <a name="ClinicalTrial.getDetails"></a>
 
