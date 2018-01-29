@@ -34,7 +34,7 @@ class ClinicalTrial {
      * @param {string} terms - Specify words or phrases related to the studies you want to find. This performs a general search of the study information, including the title, brief description, conditions, interventions, and locations. Also use this field to find studies by NCT number.
      * @param {string} country - Studies are often conducted in many locations around the world. Use this field to select up to three locations to search for studies. For the United States, you can narrow your search by selecting a state.
      * @param {string} gender - Search by the sex of persons who may participate in a study.
-     * @param {string} healthy - Limit your search to studies which accept healthy participants (people who do not have the condition or related conditions or symptoms being studies).
+     * @param {bool} healthy - Limit your search to studies which accept healthy participants (people who do not have the condition or related conditions or symptoms being studies).
      * @param {number} count - Number of results to return. Default is 25.
      */
 
