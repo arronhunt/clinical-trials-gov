@@ -35,6 +35,7 @@ class ClinicalTrial {
      * @param {string} country - Studies are often conducted in many locations around the world. Use this field to select up to three locations to search for studies. For the United States, you can narrow your search by selecting a state.
      * @param {string} gender - Search by the sex of persons who may participate in a study.
      * @param {string} healthy - Limit your search to studies which accept healthy participants (people who do not have the condition or related conditions or symptoms being studies).
+     * @param {number} count - Number of results to return. Default is 25.
      */
 
     /**
@@ -52,6 +53,7 @@ class ClinicalTrial {
         query += `&state1=NA:${props.country || 'US'}:${props.state || 'CA'}`;
         query += `&gndr=${props.gender || ''}`;
         query += `&hlth=${props.healthy ? 'Y' : 'N'}`;
+        query += `&count=${props.count || 25}`;
 
         return this.request(query).then(result => result.search_results.clinical_study);
     }

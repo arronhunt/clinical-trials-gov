@@ -71,4 +71,5 @@ Get details for a specific trial from a ClinicalTrials.gov Identifier
 | country | <code>string</code> | Studies are often conducted in many locations around the world. Use this field to select up to three locations to search for studies. For the United States, you can narrow your search by selecting a state. |
 | gender | <code>string</code> | Search by the sex of persons who may participate in a study. |
 | healthy | <code>string</code> | Limit your search to studies which accept healthy participants (people who do not have the condition or related conditions or symptoms being studies). |
+| count | <code>number</code> | Number of results to return. Default is 25. |
 
