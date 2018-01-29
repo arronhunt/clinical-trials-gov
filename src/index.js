@@ -1,4 +1,4 @@
-const fetch = require('node-fetch');
+const https = require('https');
 const parseString = require('xml2js').parseString;
 
 const URL = "https://clinicaltrials.gov/ct2";
@@ -7,26 +7,6 @@ const URL = "https://clinicaltrials.gov/ct2";
  * Clinical trials
  */
 class ClinicalTrial {
-
-    /*
-    * Internal request function that parses xml response and returns a JSON result
-    */
-    static async request(query) {
-        return new Promise(resolve => {
-            fetch(query)
-            .then(response => response.text())
-            .then(xml => {
-                parseString(xml, {explicitArray: false}, function (err, result) {
-                    if (err) {
-                        throw err;
-                    } else {
-                        resolve(result);
-                    }
-                }); 
-            });
-        });
-    }
-
     /**
      * @typedef {object} SearchProps
      * @param {string} status - Specify whether you want to search for studies that are recruiting participants or in other stages.
@@ -55,7 +35,8 @@ class ClinicalTrial {
         query += `&hlth=${props.healthy ? 'Y' : 'N'}`;
         query += `&count=${props.count || 25}`;
 
-        return this.request(query).then(result => result.search_results.clinical_study);
+        // return this.request(query).then(result => result.search_results.clinical_study);
+        return httpGetAsync(query).then(result => result.search_results.clinical_study);
     }
 
     /**
@@ -67,7 +48,7 @@ class ClinicalTrial {
         let query = `${URL}/rpc/extend/cond`;
         query += `?cond=${search_query}`;
 
-        return fetch(query).then(resp => resp.text()).then(JSON.parse);
+        return httpGetAsync(query, false)
     }
 
     /**
@@ -79,8 +60,45 @@ class ClinicalTrial {
         let query = `${URL}/show/${id}`;
         query += '?displayxml=true';
 
-        return this.request(query).then(result => result.clinical_study);
+        // return this.request(query).then(result => result.clinical_study);
+        return httpGetAsync(query).then(result => result.clinical_study);
     }
+}
+
+/*
+* Parse response XML and return formatted JSON
+*/
+const parseXML = (xml) => {
+    let response;
+    parseString(xml, {
+        explicitArray: false,
+        mergeAttrs: true,
+        normalize: true,
+    }, (err, result) => {
+        if (!err) { 
+            response = result;
+        } else { throw err };
+    });
+    return response;
+}
+
+/*
+* Make an async request using https
+*/
+const httpGetAsync = (query, parse_xml = true) => {
+    return new Promise((resolve, reject) => {
+        const request = https.get(query, response => {
+            if (response.statusCode < 200 || response.statusCode > 299) {
+                reject(new Error('Failed to load page, status code: ' + response.statusCode));
+            };
+            let data = '';
+            response.on('data', chunk => {data += chunk});
+            response.on('end', () => {
+                resolve(parse_xml ? parseXML(data) : data);
+            });
+        });
+        request.on('error', (error) => reject(error));
+    });
 }
 
 module.exports = ClinicalTrial;
